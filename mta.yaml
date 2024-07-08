@@ -1,0 +1,67 @@
+_schema-version: "3.1"
+ID: SlackInteractivity
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: SlackInteractivity-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: SlackInteractivity-db
+      - name: SlackInteractivity-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      readiness-health-check-http-endpoint: /health
+      readiness-health-check-type: http
+    build-parameters:
+      builder: npm
+  - name: SlackInteractivity-db-deployer
+    type: hdb
+    path: db
+    requires:
+      - name: SlackInteractivity-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: workflow-module
+    type: com.sap.application.content
+    path: workflow-module
+    requires:
+      - name: sap_processautomation
+        parameters:
+          content-target: true
+          service-key:
+            config:
+              deployUsageScenario: workflow
+            name: spa-workflow-service-key
+resources:
+  - name: SlackInteractivity-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: sap_processautomation
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: process-automation-service
+      service-plan: standard
+  - name: SlackInteractivity-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: SlackInteractivity-${org}-${space}
+        tenant-mode: dedicated
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

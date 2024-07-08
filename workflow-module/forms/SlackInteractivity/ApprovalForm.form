@@ -1,0 +1,99 @@
+{
+    "id": "approvalform",
+    "schemaVersion": "1.1.0",
+    "name": "ApprovalForm",
+    "revision": "1.0",
+    "type": "task",
+    "readOnly": false,
+    "content": [
+        {
+            "id": "please_review_below_details_before_confirm",
+            "type": "section",
+            "title": "Please Review Below details before Confirm",
+            "content": [
+                {
+                    "id": "employee_id",
+                    "type": "integer",
+                    "label": "Employee Id",
+                    "readOnly": false,
+                    "value": "${context.id}",
+                    "constraints": {
+                        "required": true
+                    }
+                },
+                {
+                    "id": "first_name",
+                    "type": "string",
+                    "label": "First Name",
+                    "readOnly": false,
+                    "value": "${context.firstname}",
+                    "constraints": {
+                        "required": true
+                    }
+                },
+                {
+                    "id": "last_name",
+                    "type": "string",
+                    "label": "Last Name",
+                    "readOnly": false,
+                    "value": "${context.lastname}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "email",
+                    "type": "string",
+                    "label": "Email",
+                    "readOnly": false,
+                    "value": "${context.email}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "designation",
+                    "type": "string",
+                    "label": "Designation",
+                    "readOnly": false,
+                    "value": "${context.designation}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "it_equipment",
+                    "type": "string",
+                    "label": "IT Equipment",
+                    "readOnly": false,
+                    "value": "${context.itequipment}",
+                    "constraints": {
+                        "required": true
+                    }
+                },
+                {
+                    "id": "amount",
+                    "type": "integer",
+                    "label": "Amount",
+                    "readOnly": false,
+                    "value": "${context.amount}",
+                    "constraints": {
+                        "required": true
+                    }
+                }
+            ]
+        }
+    ],
+    "decisions": [
+        {
+            "id": "approve",
+            "text": "Approve",
+            "decisionType": "positive"
+        },
+        {
+            "id": "reject",
+            "text": "Reject",
+            "decisionType": "negative"
+        }
+    ]
+}
